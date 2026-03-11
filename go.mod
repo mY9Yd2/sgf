@@ -1,3 +1,3 @@
-module github.com/rooklift/sgf
+module github.com/mY9Yd2/sgf
 
 go 1.16
