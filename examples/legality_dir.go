@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {
@@ -47,7 +47,7 @@ func handle_file(path string, _ os.FileInfo, err error) error {
 
 		if err != nil {
 			re, _ := root.GetValue("RE")
-			fmt.Printf("%s: Move %d of %d: %v -- %s\n", filepath.Base(path), i, len(node.GetEnd().GetLine()) - 1, err, re)
+			fmt.Printf("%s: Move %d of %d: %v -- %s\n", filepath.Base(path), i, len(node.GetEnd().GetLine())-1, err, re)
 			return nil
 		}
 

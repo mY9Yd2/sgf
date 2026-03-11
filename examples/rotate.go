@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {
 
-	root := sgf.LoadArgOrQuit(1)							// Equivalent to sgf.Load(os.Args[1])
+	root := sgf.LoadArgOrQuit(1) // Equivalent to sgf.Load(os.Args[1])
 	nodes := root.TreeNodes()
 	boardsize := root.RootBoardSize()
 
@@ -31,7 +31,7 @@ func rotate(node *sgf.Node, boardsize int) {
 		for i, val := range all_values {
 			x, y, onboard := sgf.ParsePoint(val, boardsize)
 			if onboard {
-				all_values[i] = sgf.Point(boardsize - 1 - y, x)
+				all_values[i] = sgf.Point(boardsize-1-y, x)
 			}
 		}
 		node.SetValues(key, all_values)

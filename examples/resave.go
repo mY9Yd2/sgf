@@ -2,7 +2,8 @@ package main
 
 import (
 	"os"
-	"github.com/rooklift/sgf"
+
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {

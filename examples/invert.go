@@ -7,14 +7,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
-var	reverse_map = map[string]string{
+var reverse_map = map[string]string{
 	"B": "W", "W": "B", "AB": "AW", "AW": "AB", "PB": "PW", "PW": "PB", "BR": "WR", "WR": "BR"}
 
 func main() {
-	root := sgf.LoadArgOrQuit(1)							// Equivalent to sgf.Load(os.Args[1])
+	root := sgf.LoadArgOrQuit(1) // Equivalent to sgf.Load(os.Args[1])
 	nodes := root.TreeNodes()
 
 	invert_km_re(root)
@@ -39,9 +39,9 @@ func invert_km_re(root *sgf.Node) {
 	result, ok := root.GetValue("RE")
 	if ok {
 		if strings.HasPrefix(result, "B+") {
-			root.SetValue("RE", "W+" + result[2:])
+			root.SetValue("RE", "W+"+result[2:])
 		} else if strings.HasPrefix(result, "W+") {
-			root.SetValue("RE", "B+" + result[2:])
+			root.SetValue("RE", "B+"+result[2:])
 		}
 	}
 
@@ -50,7 +50,7 @@ func invert_km_re(root *sgf.Node) {
 		if strings.HasPrefix(komi, "-") {
 			root.SetValue("KM", komi[1:])
 		} else {
-			root.SetValue("KM", "-" + komi)
+			root.SetValue("KM", "-"+komi)
 		}
 	}
 }

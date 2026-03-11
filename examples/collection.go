@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {
@@ -24,7 +24,9 @@ func main() {
 	for _, d := range dirs {
 
 		files, err := ioutil.ReadDir(d)
-		if err != nil { panic(err.Error()) }
+		if err != nil {
+			panic(err.Error())
+		}
 
 		for _, f := range files {
 			root, err := sgf.Load(filepath.Join(d, f.Name()))

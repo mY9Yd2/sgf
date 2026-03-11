@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {
-	if len(os.Args) < 2 { return }
+	if len(os.Args) < 2 {
+		return
+	}
 
 	root, err := sgf.Load(os.Args[1])
 	if err != nil {

@@ -7,22 +7,22 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 type Record struct {
-	Path		string		`json:"path"`
-	Filename	string		`json:"filename"`
-	Dyer		string		`json:"dyer"`
-	SZ			int			`json:"SZ"`
-	HA			int			`json:"HA"`
-	PB			string		`json:"PB"`
-	PW			string		`json:"PW"`
-	BR			string		`json:"BR"`
-	WR			string		`json:"WR"`
-	RE			string		`json:"RE"`
-	DT			string		`json:"DT"`
-	EV			string		`json:"EV"`
+	Path     string `json:"path"`
+	Filename string `json:"filename"`
+	Dyer     string `json:"dyer"`
+	SZ       int    `json:"SZ"`
+	HA       int    `json:"HA"`
+	PB       string `json:"PB"`
+	PW       string `json:"PW"`
+	BR       string `json:"BR"`
+	WR       string `json:"WR"`
+	RE       string `json:"RE"`
+	DT       string `json:"DT"`
+	EV       string `json:"EV"`
 }
 
 func main() {

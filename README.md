@@ -1,4 +1,4 @@
-Golang library for manipulation of SGF trees (i.e. Go / Weiqi / Baduk kifu). Some auto-generated documentation is available for the various methods, etc, [at GoDoc](https://godoc.org/github.com/rooklift/sgf).
+Golang library for manipulation of SGF trees (i.e. Go / Weiqi / Baduk kifu). Some auto-generated documentation is available for the various methods, etc, [at GoDoc](https://godoc.org/github.com/mY9Yd2/sgf).
 
 # Technical notes
 

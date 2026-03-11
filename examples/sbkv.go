@@ -11,11 +11,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rooklift/sgf"
+	"github.com/mY9Yd2/sgf"
 )
 
 func main() {
-	if len(os.Args) < 2 { return }
+	if len(os.Args) < 2 {
+		return
+	}
 	filepath.Walk(os.Args[1], handle_file)
 }
 
@@ -35,10 +37,10 @@ func handle_file(path string, _ os.FileInfo, err error) error {
 	for node := root; node != nil; node = node.MainChild() {
 
 		comment, _ := node.GetValue("C")
-		lines := strings.Split(comment, "\n")			// Always returns at least one string
+		lines := strings.Split(comment, "\n") // Always returns at least one string
 		val, err := strconv.ParseFloat(strings.TrimSpace(lines[0]), 64)
 		if err == nil {
-			node.SetValue("SBKV", fmt.Sprintf("%.2f", val * 100))
+			node.SetValue("SBKV", fmt.Sprintf("%.2f", val*100))
 		}
 		if node.Parent() != nil {
 			for _, sibling := range node.Parent().Children() {
