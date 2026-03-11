@@ -5,7 +5,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,7 +19,7 @@ func main() {
 		return
 	}
 
-	files, err := ioutil.ReadDir(os.Args[1])
+	files, err := os.ReadDir(os.Args[1])
 	if err != nil {
 		panic(err.Error())
 	}

@@ -41,23 +41,23 @@ func AdjacentPoints(p string, size int) []string {
 	var ret []string
 
 	if x > 0 {
-		ret = append(ret, byte_to_string(alpha[x - 1]) + byte_to_string(p[1]))		// Left
+		ret = append(ret, byte_to_string(alpha[x-1])+byte_to_string(p[1])) // Left
 	}
-	if x < size - 1 {
-		ret = append(ret, byte_to_string(alpha[x + 1]) + byte_to_string(p[1]))		// Right
+	if x < size-1 {
+		ret = append(ret, byte_to_string(alpha[x+1])+byte_to_string(p[1])) // Right
 	}
 	if y > 0 {
-		ret = append(ret, byte_to_string(p[0]) + byte_to_string(alpha[y - 1]))		// Up
+		ret = append(ret, byte_to_string(p[0])+byte_to_string(alpha[y-1])) // Up
 	}
-	if y < size - 1 {
-		ret = append(ret, byte_to_string(p[0]) + byte_to_string(alpha[y + 1]))		// Down
+	if y < size-1 {
+		ret = append(ret, byte_to_string(p[0])+byte_to_string(alpha[y+1])) // Down
 	}
 
 	return ret
 }
 
-func byte_to_string(b byte) string {	// One cannot do string(b) because string() turns integers into utf-8 strings,
-	return string([]byte{b})			// therefore if b > 127 it will necessarily return a string of length >= 2
+func byte_to_string(b byte) string { // One cannot do string(b) because string() turns integers into utf-8 strings,
+	return string([]byte{b}) // therefore if b > 127 it will necessarily return a string of length >= 2
 }
 
 // ParsePoint takes an SGF coordinate (e.g. "dd") and a board size, and returns
@@ -78,10 +78,18 @@ func ParsePoint(p string, size int) (x, y int, onboard bool) {
 	x = -1
 	y = -1
 
-	if p[0] >= 'a' && p[0] <= 'z' { x = int(p[0]) - 97 }
-	if p[1] >= 'a' && p[1] <= 'z' { y = int(p[1]) - 97 }
-	if p[0] >= 'A' && p[0] <= 'Z' { x = int(p[0]) - 39 }
-	if p[1] >= 'A' && p[1] <= 'Z' { y = int(p[1]) - 39 }
+	if p[0] >= 'a' && p[0] <= 'z' {
+		x = int(p[0]) - 97
+	}
+	if p[1] >= 'a' && p[1] <= 'z' {
+		y = int(p[1]) - 97
+	}
+	if p[0] >= 'A' && p[0] <= 'Z' {
+		x = int(p[0]) - 39
+	}
+	if p[1] >= 'A' && p[1] <= 'Z' {
+		y = int(p[1]) - 39
+	}
 
 	onboard = x >= 0 && x < size && y >= 0 && y < size
 
@@ -123,49 +131,55 @@ func HandicapPoints(size, handicap int, tygem bool) []string {
 		handicap = 9
 	}
 
-	d := 1; if size >= 7 { d = 2 }; if size >= 13 { d = 3 }
+	d := 1
+	if size >= 7 {
+		d = 2
+	}
+	if size >= 13 {
+		d = 3
+	}
 
 	z := size
 
 	var ret []string
 
 	if handicap >= 2 {
-		ret = append(ret, Point(z - d - 1, d))
-		ret = append(ret, Point(d, z - d - 1))
+		ret = append(ret, Point(z-d-1, d))
+		ret = append(ret, Point(d, z-d-1))
 	}
 
 	if handicap >= 3 {
 		if tygem {
 			ret = append(ret, Point(d, d))
 		} else {
-			ret = append(ret, Point(z - d - 1, z - d - 1))
+			ret = append(ret, Point(z-d-1, z-d-1))
 		}
 	}
 
 	if handicap >= 4 {
 		if tygem {
-			ret = append(ret, Point(z - d - 1, z - d - 1))
+			ret = append(ret, Point(z-d-1, z-d-1))
 		} else {
 			ret = append(ret, Point(d, d))
 		}
 	}
 
-	if size % 2 == 0 {
+	if size%2 == 0 {
 		return ret
 	}
 
 	if handicap == 5 || handicap == 7 || handicap == 9 {
-		ret = append(ret, Point(z / 2, z / 2))
+		ret = append(ret, Point(z/2, z/2))
 	}
 
 	if handicap >= 6 {
-		ret = append(ret, Point(d, z / 2))
-		ret = append(ret, Point(z - d - 1, z / 2))
+		ret = append(ret, Point(d, z/2))
+		ret = append(ret, Point(z-d-1, z/2))
 	}
 
 	if handicap >= 8 {
-		ret = append(ret, Point(z / 2, d))
-		ret = append(ret, Point(z / 2, z - d - 1))
+		ret = append(ret, Point(z/2, d))
+		ret = append(ret, Point(z/2, z-d-1))
 	}
 
 	return ret
@@ -214,8 +228,8 @@ func ParsePointList(s string, size int) []string {
 
 	var ret []string
 
-	for x := x1; x <= x2; x++ {					// <= is correct
-		for y := y1; y <= y2; y++ {				// <= is correct
+	for x := x1; x <= x2; x++ { // <= is correct
+		for y := y1; y <= y2; y++ { // <= is correct
 			ret = append(ret, Point(x, y))
 		}
 	}
@@ -244,7 +258,7 @@ func ParseGTP(s string, size int) string {
 	}
 
 	x := int(s[0]) - 65
-	if x >= 8 {					// Adjust for missing "I"
+	if x >= 8 { // Adjust for missing "I"
 		x--
 	}
 
@@ -257,7 +271,6 @@ func ParseGTP(s string, size int) string {
 
 	return Point(x, y)
 }
-
 
 // LoadArgOrQuit loads the filename given in os.Args[n] and returns the root
 // node. If this is not possible, the program exits.

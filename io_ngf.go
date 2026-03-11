@@ -95,7 +95,7 @@ func LoadNGF(ngf string) (*Node, error) {
 
 	if handicap > 1 {
 		root.SetValue("HA", strconv.Itoa(handicap))
-		root.SetValues("AB", HandicapPoints(boardsize, handicap, true))			// Uses Tygem layout
+		root.SetValues("AB", HandicapPoints(boardsize, handicap, true)) // Uses Tygem layout
 	}
 
 	if komi != 0 {
@@ -115,9 +115,15 @@ func LoadNGF(ngf string) (*Node, error) {
 		}
 	}
 
-	if pw != "" { root.SetValue("PW", pw) }
-	if pb != "" { root.SetValue("PB", pb) }
-	if re != "" { root.SetValue("RE", re) }
+	if pw != "" {
+		root.SetValue("PW", pw)
+	}
+	if pb != "" {
+		root.SetValue("PB", pb)
+	}
+	if re != "" {
+		root.SetValue("RE", re)
+	}
 
 	for _, line := range lines {
 
@@ -137,7 +143,7 @@ func LoadNGF(ngf string) (*Node, error) {
 				// Coordinates are from 1-19, but with "B" representing
 				// the digit 1. (Presumably "A" would represent 0.)
 
-				x := int(line[5]) - 66		// Thus, 66 is correct, to map B to 0, etc
+				x := int(line[5]) - 66 // Thus, 66 is correct, to map B to 0, etc
 				y := int(line[6]) - 66
 
 				if x >= 0 && x < boardsize && y >= 0 && y < boardsize {
@@ -148,7 +154,7 @@ func LoadNGF(ngf string) (*Node, error) {
 		}
 	}
 
-	if root.MainChild() == nil {		// We'll assume we failed in this case
+	if root.MainChild() == nil { // We'll assume we failed in this case
 		return nil, fmt.Errorf("load_ngf(): root ended up with zero children")
 	}
 

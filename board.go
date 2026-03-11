@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var HoshiString = "."	// Can be changed. Used when printing the board.
+var HoshiString = "." // Can be changed. Used when printing the board.
 
 // A Board contains information about a Go position. It is possible to generate
 // boards from nodes in an SGF tree, but modifying boards created in this way
@@ -14,12 +14,12 @@ var HoshiString = "."	// Can be changed. Used when printing the board.
 // relatively costly, and should probably be avoided if batch processing many
 // files.
 type Board struct {
-	Size				int
-	Player				Colour
-	Ko					string
+	Size   int
+	Player Colour
+	Ko     string
 
-	State				[][]Colour
-	CapturesBy			map[Colour]int
+	State      [][]Colour
+	CapturesBy map[Colour]int
 }
 
 // NewBoard returns an empty board of specified size.
@@ -41,8 +41,8 @@ func NewBoard(sz int) *Board {
 	}
 
 	board.CapturesBy = make(map[Colour]int)
-	board.CapturesBy[BLACK] = 0					// Not strictly
-	board.CapturesBy[WHITE] = 0					// necessary...
+	board.CapturesBy[BLACK] = 0 // Not strictly
+	board.CapturesBy[WHITE] = 0 // necessary...
 
 	return board
 }
@@ -110,8 +110,12 @@ func (self *Board) Get(p string) Colour {
 func (self *Board) get_fast(p string) Colour {
 	x := int(p[0]) - 97
 	y := int(p[1]) - 97
-	if p[0] <= 'Z' { x = int(p[0]) - 39 }
-	if p[1] <= 'Z' { y = int(p[1]) - 39 }
+	if p[0] <= 'Z' {
+		x = int(p[0]) - 39
+	}
+	if p[1] <= 'Z' {
+		y = int(p[1]) - 39
+	}
 	return self.State[x][y]
 }
 
@@ -132,7 +136,7 @@ func (self *Board) Dump() {
 	s += fmt.Sprintf("Next to play: %v\n", self.Player.Word())
 
 	fmt.Print(s)
-	os.Stdout.Sync()		// Same reasoning.
+	os.Stdout.Sync() // Same reasoning.
 }
 
 // DumpBoard prints the board; it is equivalent to fmt.Print(board.String()).
@@ -145,7 +149,7 @@ func (self *Board) String() string {
 
 	var b bytes.Buffer
 
-	ko_x, ko_y, _ := ParsePoint(self.Ko, self.Size)		// Usually -1, -1
+	ko_x, ko_y, _ := ParsePoint(self.Ko, self.Size) // Usually -1, -1
 
 	for y := 0; y < self.Size; y++ {
 		for x := 0; x < self.Size; x++ {

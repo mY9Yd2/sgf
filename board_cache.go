@@ -5,7 +5,7 @@ package sgf
 
 var mutors = []string{"B", "W", "AB", "AW", "AE", "PL", "SZ"}
 
-var total_board_updates int			// For debugging.
+var total_board_updates int // For debugging.
 
 // -----------------------------------------------------------------------------------------------
 // clear_board_cache_recursive() needs to be called whenever a node's board cache becomes invalid.
@@ -15,8 +15,8 @@ var total_board_updates int			// For debugging.
 //		* Changing the identity of its parent.
 
 func (self *Node) clear_board_cache_recursive() {
-	if self.__board_cache == nil {						// If nil, all descendent caches are nil also.
-		return											// See note in the Node struct about this.
+	if self.__board_cache == nil { // If nil, all descendent caches are nil also.
+		return // See note in the Node struct about this.
 	}
 	self.__board_cache = nil
 	for _, child := range self.children {
@@ -60,7 +60,7 @@ func (self *Node) Board() *Board {
 	for _, node := range line {
 
 		if node.__board_cache != nil {
-			initial = node.__board_cache	// Care: points to the real thing, not a copy!
+			initial = node.__board_cache // Care: points to the real thing, not a copy!
 			continue
 		}
 
@@ -68,7 +68,7 @@ func (self *Node) Board() *Board {
 			if initial == nil {
 				work = NewBoard(node.RootBoardSize())
 			} else {
-				work = initial.Copy()		// MUST COPY
+				work = initial.Copy() // MUST COPY
 			}
 		}
 

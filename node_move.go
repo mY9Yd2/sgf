@@ -11,12 +11,12 @@ package sgf
 //
 // Note that passes cannot be played with Play.
 func (self *Node) Play(p string) (*Node, error) {
-	return self.PlayColour(p, self.Board().Player)							// Uses board info to determine colour.
+	return self.PlayColour(p, self.Board().Player) // Uses board info to determine colour.
 }
 
 // PlayColour is like Play, except the colour is specified rather than being
 // automatically determined.
-func (self *Node) PlayColour(p string, colour Colour) (*Node, error) {		// Returns new node on success; self on failure.
+func (self *Node) PlayColour(p string, colour Colour) (*Node, error) { // Returns new node on success; self on failure.
 
 	legal, err := self.Board().LegalColour(p, colour)
 	if legal == false {
@@ -25,10 +25,13 @@ func (self *Node) PlayColour(p string, colour Colour) (*Node, error) {		// Retur
 
 	// Return the already-extant child if there is such a thing...
 
-	key := "B"; if colour == WHITE { key = "W" }
+	key := "B"
+	if colour == WHITE {
+		key = "W"
+	}
 
 	for _, child := range self.children {
-		if child.ValueCount(key) == 1 {											// Ignore any illegal nodes with 2 or more...
+		if child.ValueCount(key) == 1 { // Ignore any illegal nodes with 2 or more...
 			mv, _ := child.GetValue(key)
 			if mv == p {
 				return child, nil
@@ -36,7 +39,7 @@ func (self *Node) PlayColour(p string, colour Colour) (*Node, error) {		// Retur
 		}
 	}
 
-	new_node := NewNode(self)													// Attaches new_node to self.
+	new_node := NewNode(self) // Attaches new_node to self.
 	new_node.SetValue(key, p)
 	return new_node, nil
 }
@@ -54,17 +57,20 @@ func (self *Node) Pass() *Node {
 func (self *Node) PassColour(colour Colour) *Node {
 
 	if colour != BLACK && colour != WHITE {
-		panic("Node.PassColour(): no colour specified")							// This is a programming error, so panic, not error.
+		panic("Node.PassColour(): no colour specified") // This is a programming error, so panic, not error.
 	}
 
 	board := self.Board()
 
-	key := "B"; if colour == WHITE { key = "W" }
+	key := "B"
+	if colour == WHITE {
+		key = "W"
+	}
 
 	// Return the already-extant child if there is such a thing...
 
 	for _, child := range self.children {
-		if child.ValueCount(key) == 1 {											// Ignore any illegal nodes with 2 or more...
+		if child.ValueCount(key) == 1 { // Ignore any illegal nodes with 2 or more...
 			mv, _ := child.GetValue(key)
 			if ValidPoint(mv, board.Size) == false {
 				return child

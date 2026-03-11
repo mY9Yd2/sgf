@@ -17,9 +17,9 @@ type Node struct {
 	// first item in a slice is the key, and what follows are values.
 	// Instead, maps could be used, but the performance is much worse.
 
-	props			[][]string		// e.g. ["B" "dd"] ["TR", "dd", "fj", "np"]		- e.g. 1 and 3 values for these keys.
-	children		[]*Node
-	parent			*Node
+	props    [][]string // e.g. ["B" "dd"] ["TR", "dd", "fj", "np"]		- e.g. 1 and 3 values for these keys.
+	children []*Node
+	parent   *Node
 
 	// Note: generating a board_cache always involves generating all the ancestor
 	// board_caches first, so if a board_cache is nil, all the node's descendents
@@ -27,7 +27,7 @@ type Node struct {
 	// clear_board_cache_recursive(). Therefore, to ensure this is so, this should
 	// never be set directly except by a very few functions, hence its name.
 
-	__board_cache	*Board
+	__board_cache *Board
 }
 
 // NewNode creates a new node with the specified parent.
@@ -51,9 +51,7 @@ func (self *Node) Copy() *Node {
 
 	for ki := 0; ki < len(self.props); ki++ {
 		ret.props[ki] = make([]string, len(self.props[ki]))
-		for j := 0; j < len(self.props[ki]); j++ {
-			ret.props[ki][j] = self.props[ki][j]
-		}
+		copy(ret.props[ki], self.props[ki])
 	}
 
 	return ret
@@ -63,7 +61,7 @@ func (self *Node) Copy() *Node {
 // instantiates io.WriterTo for no particularly good reason.
 func (self *Node) WriteTo(w io.Writer) (n int64, err error) {
 
-	b := bytes.NewBuffer(make([]byte, 0, 8))		// Start buffer with len 0 cap 8
+	b := bytes.NewBuffer(make([]byte, 0, 8)) // Start buffer with len 0 cap 8
 
 	b.WriteByte(';')
 
@@ -101,7 +99,7 @@ func (self *Node) key_index(key string) int {
 // already exists for the key, nothing happens.
 func (self *Node) AddValue(key, val string) {
 
-	self.mutor_check(key)								// If key is a MUTOR, clear board caches.
+	self.mutor_check(key) // If key is a MUTOR, clear board caches.
 
 	ki := self.key_index(key)
 	if ki == -1 {
@@ -126,9 +124,9 @@ func (self *Node) DeleteKey(key string) {
 		return
 	}
 
-	self.mutor_check(key)								// If key is a MUTOR, clear board caches.
+	self.mutor_check(key) // If key is a MUTOR, clear board caches.
 
-	self.props = append(self.props[:ki], self.props[ki + 1:]...)
+	self.props = append(self.props[:ki], self.props[ki+1:]...)
 }
 
 // DeleteValue checks if the given key in this node has the given value, and
@@ -140,18 +138,18 @@ func (self *Node) DeleteValue(key, val string) {
 		return
 	}
 
-	self.mutor_check(key)								// If key is a MUTOR, clear board caches.
+	self.mutor_check(key) // If key is a MUTOR, clear board caches.
 
-	for i := len(self.props[ki]) - 1; i >= 1; i-- {		// Use i >= 1 so we don't delete the key itself.
+	for i := len(self.props[ki]) - 1; i >= 1; i-- { // Use i >= 1 so we don't delete the key itself.
 		if self.props[ki][i] == val {
-			self.props[ki] = append(self.props[ki][:i], self.props[ki][i + 1:]...)
+			self.props[ki] = append(self.props[ki][:i], self.props[ki][i+1:]...)
 		}
 	}
 
 	// Delete key if needed...
 
 	if len(self.props[ki]) < 2 {
-		self.props = append(self.props[:ki], self.props[ki + 1:]...)
+		self.props = append(self.props[:ki], self.props[ki+1:]...)
 	}
 }
 
@@ -220,7 +218,7 @@ func (self *Node) AllValues(key string) []string {
 		return nil
 	}
 
-	var ret []string									// Make a new slice so that it's safe to modify.
+	var ret []string // Make a new slice so that it's safe to modify.
 
 	for _, val := range self.props[ki][1:] {
 		ret = append(ret, val)
@@ -228,4 +226,3 @@ func (self *Node) AllValues(key string) []string {
 
 	return ret
 }
-

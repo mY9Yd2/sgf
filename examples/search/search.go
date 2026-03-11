@@ -44,7 +44,7 @@ func handle_file(dirname, filename, search string) error {
 	pb, _ := root.GetValue("PB")
 	pw, _ := root.GetValue("PW")
 
-	if strings.ToLower(pb) == strings.ToLower(search) || strings.ToLower(pw) == strings.ToLower(search) {
+	if strings.EqualFold(pb, search) || strings.EqualFold(pw, search) {
 		fmt.Printf("%v\n", fullpath)
 	}
 

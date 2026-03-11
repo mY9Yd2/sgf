@@ -17,29 +17,29 @@ func TestIllegality(t *testing.T) {
 
 	root, err := Load("test_kifu/illegality.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
 	node := root.GetEnd()
 	original_end := node
 
-	node, err = node.Play(Point(10,8))
+	node, err = node.Play(Point(10, 8))
 	if err == nil {
 		t.Errorf("Recaptured a ko")
 	}
 
-	node, err = node.Play(Point(11,9))
+	node, err = node.Play(Point(11, 9))
 	if err == nil {
 		t.Errorf("Played a suicide move")
 	}
 
-	node, err = node.Play(Point(11,10))
+	node, err = node.Play(Point(11, 10))
 	if err == nil {
 		t.Errorf("Played on top of a stone")
 	}
 
-	node, err = node.Play(Point(19,19))
+	node, err = node.Play(Point(19, 19))
 	if err == nil {
 		t.Errorf("Played an off-board move")
 	}
@@ -58,7 +58,7 @@ func TestCollection(t *testing.T) {
 
 	collection, err := LoadCollection("test_kifu/collection.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -80,7 +80,7 @@ func TestCyclicAttachment(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -111,7 +111,7 @@ func TestDyer(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -125,7 +125,7 @@ func TestUnescaping(t *testing.T) {
 
 	root, err := Load("test_kifu/escaped.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -147,7 +147,7 @@ func TestMainLineLoader(t *testing.T) {
 
 	root, err := LoadMainLine("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -161,7 +161,7 @@ func TestGibLoader(t *testing.T) {
 
 	root, err := Load("test_kifu/3handicap.gib")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -185,7 +185,7 @@ func TestNgfLoader(t *testing.T) {
 
 	root, err := Load("test_kifu/3handicap.ngf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -209,7 +209,7 @@ func TestHandicap(t *testing.T) {
 
 	root, err := Load("test_kifu/9handicap.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -229,7 +229,7 @@ func TestKeyValues(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -245,7 +245,7 @@ func TestUnicode(t *testing.T) {
 
 	root, err := Load("test_kifu/unicode.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -262,11 +262,11 @@ func TestBoard(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
-	total_board_updates = 0			// Reset global
+	total_board_updates = 0 // Reset global
 
 	root.Board()
 	if total_board_updates != 1 {
@@ -276,7 +276,7 @@ func TestBoard(t *testing.T) {
 	// Real tests...
 
 	board := root.GetEnd().Board()
-	if total_board_updates != 212 {	//
+	if total_board_updates != 212 { //
 		t.Errorf("total_board_updates not as expected")
 	}
 
@@ -302,7 +302,7 @@ func TestGroups(t *testing.T) {
 
 	root, err := Load("test_kifu/group_info.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -332,7 +332,7 @@ func TestGroups(t *testing.T) {
 
 	root, err = Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -356,7 +356,7 @@ func TestCache(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -410,7 +410,7 @@ func TestNodeCopy(t *testing.T) {
 
 	root := NewNode(nil)
 	node := NewNode(root)
-	NewNode(node)			// Add a child.
+	NewNode(node) // Add a child.
 
 	node.AddValue("AB", "dd")
 	node.AddValue("AB", "pp")
@@ -467,7 +467,7 @@ func TestNodeUpdates(t *testing.T) {
 	expect_vals(node, "AB", 1)
 	expect_vals(node, "AW", 0)
 
-	node.AddValue("AB", "dd")			// Duplicate value, shouldn't add.
+	node.AddValue("AB", "dd") // Duplicate value, shouldn't add.
 	expect_keys(node, 1)
 	expect_vals(node, "AB", 1)
 
@@ -479,15 +479,15 @@ func TestNodeUpdates(t *testing.T) {
 	expect_keys(node, 1)
 	expect_vals(node, "AB", 3)
 
-	node.SetValue("AB", "jj")			// SetValue should delete all others.
+	node.SetValue("AB", "jj") // SetValue should delete all others.
 	expect_keys(node, 1)
 	expect_vals(node, "AB", 1)
 
-	node.DeleteValue("AB", "dd")		// Deleting a non-existant value does nothing.
+	node.DeleteValue("AB", "dd") // Deleting a non-existant value does nothing.
 	expect_keys(node, 1)
 	expect_vals(node, "AB", 1)
 
-	node.DeleteValue("AB", "AB")		// Check this doesn't delete the key.
+	node.DeleteValue("AB", "AB") // Check this doesn't delete the key.
 	expect_keys(node, 1)
 	expect_vals(node, "AB", 1)
 
@@ -501,7 +501,7 @@ func TestRootLoader(t *testing.T) {
 
 	root, err := LoadRoot("test_kifu/instabranch.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -515,7 +515,7 @@ func TestLine(t *testing.T) {
 
 	root, err := Load("test_kifu/2016-03-10a.sgf")
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 		return
 	}
 
@@ -541,16 +541,16 @@ func TestBoardEdits(t *testing.T) {
 	board.Play("pp")
 	expect_next_player(board, WHITE)
 
-	board.Play("pp")					// Fails
+	board.Play("pp") // Fails
 	expect_next_player(board, WHITE)
 
-	board.ForceStone("pp", WHITE)		// Succeeds
+	board.ForceStone("pp", WHITE) // Succeeds
 	expect_next_player(board, BLACK)
 
-	board.ForceStone("pp", WHITE)		// Succeeds
+	board.ForceStone("pp", WHITE) // Succeeds
 	expect_next_player(board, BLACK)
 
-	board.ForceStone("pp", BLACK)		// Succeeds
+	board.ForceStone("pp", BLACK) // Succeeds
 	expect_next_player(board, WHITE)
 
 	board.Play("dd")
@@ -563,7 +563,7 @@ func TestBoardEdits(t *testing.T) {
 func TestLegalMovesEquivalence(t *testing.T) {
 	fmt.Printf("TestLegalMovesEquivalence\n")
 
-	const alpha = "abcdefghijklmnopqrst"		// 20 chars, so sometimes generates offboard
+	const alpha = "abcdefghijklmnopqrst" // 20 chars, so sometimes generates offboard
 
 	for i := 0; i < 10; i++ {
 
@@ -573,7 +573,7 @@ func TestLegalMovesEquivalence(t *testing.T) {
 		var node_err, board_err error
 
 		for n := 0; n < 1000; n++ {
-			x := rand.Intn(20)					// See above
+			x := rand.Intn(20) // See above
 			y := rand.Intn(20)
 			p := fmt.Sprintf("%c%c", alpha[x], alpha[y])
 
@@ -603,7 +603,7 @@ func TestLegalMovesEquivalence(t *testing.T) {
 func TestForcedMovesEquivalence(t *testing.T) {
 	fmt.Printf("TestForcedMovesEquivalence\n")
 
-	const alpha = "abcdefghijklmnopqrst"		// 20 chars, so sometimes generates offboard
+	const alpha = "abcdefghijklmnopqrst" // 20 chars, so sometimes generates offboard
 
 	for i := 0; i < 10; i++ {
 
@@ -611,7 +611,7 @@ func TestForcedMovesEquivalence(t *testing.T) {
 		node := NewTree(19)
 
 		for n := 0; n < 1000; n++ {
-			x := rand.Intn(20)					// See above
+			x := rand.Intn(20) // See above
 			y := rand.Intn(20)
 			p := fmt.Sprintf("%c%c", alpha[x], alpha[y])
 
@@ -633,7 +633,7 @@ func TestForcedMovesEquivalence(t *testing.T) {
 
 				key = "A" + key
 				node = NewNode(node)
-				node.SetValue(key, p)			// Key is AB or AW
+				node.SetValue(key, p) // Key is AB or AW
 
 			} else {
 
@@ -643,7 +643,7 @@ func TestForcedMovesEquivalence(t *testing.T) {
 				board.ForceStone(p, colour)
 
 				node = NewNode(node)
-				node.SetValue(key, p)			// Key is B or W
+				node.SetValue(key, p) // Key is B or W
 
 			}
 
@@ -669,7 +669,7 @@ func TestLoadSGF(t *testing.T) {
 		t.Errorf("Failed to parse the SGF contents")
 	}
 	if s.SGF() != sgf {
-		t.Errorf("Parsed and generated SGF should be the same")		// How safe is this test? Key order is arbitrary in SGF...
+		t.Errorf("Parsed and generated SGF should be the same") // How safe is this test? Key order is arbitrary in SGF...
 	}
 }
 

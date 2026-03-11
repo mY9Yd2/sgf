@@ -20,7 +20,7 @@ func SaveCollection(nodes []*Node, filename string) error {
 
 	for _, node := range nodes {
 		if node != nil {
-			roots = append(roots, node.GetRoot())		// Note that node.Save() relies on GetRoot() here.
+			roots = append(roots, node.GetRoot()) // Note that node.Save() relies on GetRoot() here.
 		}
 	}
 
@@ -33,11 +33,11 @@ func SaveCollection(nodes []*Node, filename string) error {
 		return err
 	}
 
-	w := bufio.NewWriter(outfile)		// bufio for speedier output if file is huge.
+	w := bufio.NewWriter(outfile) // bufio for speedier output if file is huge.
 	for _, root := range roots {
 		root.write_tree(w)
 	}
-	w.Flush()							// "After all data has been written, the client should call the Flush method"
+	w.Flush() // "After all data has been written, the client should call the Flush method"
 
 	// We didn't defer outfile.Close() like normal people so we can check its error here, just in case...
 
@@ -53,7 +53,7 @@ func SaveCollection(nodes []*Node, filename string) error {
 // called from the root node, but can be called from any node in an SGF tree -
 // the whole tree is always saved.
 func (self *Node) Save(filename string) error {
-	return SaveCollection([]*Node{self}, filename)		// Not using self.GetRoot() since SaveCollection does.
+	return SaveCollection([]*Node{self}, filename) // Not using self.GetRoot() since SaveCollection does.
 }
 
 // SGF returns the entire tree as a string in SGF format.
@@ -91,8 +91,6 @@ func (self *Node) write_tree(w io.Writer) {
 
 	// We could print a newline...
 	// fmt.Fprint(w, "\n")
-
-	return
 }
 
 func escape_string(s string) string {
@@ -167,8 +165,8 @@ func load_sgf_tree(sgf string, parent_of_local_root *Node) (*Node, int, error) {
 	var node *Node
 	var tree_started bool
 	var inside_value bool
-	var value bytes.Buffer						// I used to use string and += string(c), but
-	var key bytes.Buffer						// ran into https://play.golang.org/p/435YV7klTuI
+	var value bytes.Buffer // I used to use string and += string(c), but
+	var key bytes.Buffer   // ran into https://play.golang.org/p/435YV7klTuI
 	var keycomplete bool
 
 	for i := 0; i < len(sgf); i++ {
@@ -176,7 +174,7 @@ func load_sgf_tree(sgf string, parent_of_local_root *Node) (*Node, int, error) {
 		c := sgf[i]
 
 		if tree_started == false {
-			if c <= ' ' {						// Reasonable definition of whitespace, where ' ' is byte 32.
+			if c <= ' ' { // Reasonable definition of whitespace, where ' ' is byte 32.
 				continue
 			} else if c == '(' {
 				tree_started = true
@@ -188,32 +186,33 @@ func load_sgf_tree(sgf string, parent_of_local_root *Node) (*Node, int, error) {
 
 		if inside_value {
 
-			if c == '\\' {
-				if len(sgf) <= i + 1 {
+			switch c {
+			case '\\':
+				if len(sgf) <= i+1 {
 					return nil, 0, fmt.Errorf("load_sgf_tree(): escape character at end of input")
 				}
-				value.WriteByte(sgf[i + 1])
-				i++								// Skip 1 character.
-			} else if c == ']' {
+				value.WriteByte(sgf[i+1])
+				i++ // Skip 1 character.
+			case ']':
 				inside_value = false
 				if node == nil {
 					return nil, 0, fmt.Errorf("load_sgf_tree(): value ended by ] but node was nil")
 				}
 				node.AddValue(key.String(), value.String())
-			} else {
+			default:
 				value.WriteByte(c)
 			}
 
 		} else {
 
 			if c <= ' ' || (c >= 'a' && c <= 'z') {
-				continue												// Silently discard whitespace and lowercase ASCII
+				continue // Silently discard whitespace and lowercase ASCII
 			} else if c == '[' {
 				if node == nil {
 					// The tree has ( but no ; before its first property. We could return an error.
 					// Alternatively, we can tolerate this...
 					node = NewNode(parent_of_local_root)
-					root = node											// First node we saw in the tree.
+					root = node // First node we saw in the tree.
 				}
 				value.Reset()
 				inside_value = true
@@ -225,20 +224,20 @@ func load_sgf_tree(sgf string, parent_of_local_root *Node) (*Node, int, error) {
 				if node == nil {
 					return nil, 0, fmt.Errorf("load_sgf_tree(): new subtree started but node was nil")
 				}
-				_, chars_to_skip, err := load_sgf_tree(sgf[i:], node)	// Substrings are memory efficient in Golang.
+				_, chars_to_skip, err := load_sgf_tree(sgf[i:], node) // Substrings are memory efficient in Golang.
 				if err != nil {
 					return nil, 0, err
 				}
-				i += chars_to_skip - 1		// Subtract 1: the ( character we have read is also counted by the recurse.
+				i += chars_to_skip - 1 // Subtract 1: the ( character we have read is also counted by the recurse.
 			} else if c == ')' {
 				if root == nil {
 					return nil, 0, fmt.Errorf("load_sgf_tree(): subtree ended but local root was nil")
 				}
-				return root, i + 1, nil									// Return characters read.
+				return root, i + 1, nil // Return characters read.
 			} else if c == ';' {
 				if node == nil {
 					node = NewNode(parent_of_local_root)
-					root = node											// First node we saw in the tree.
+					root = node // First node we saw in the tree.
 				} else {
 					node = NewNode(node)
 				}
@@ -264,7 +263,7 @@ func load_sgf_tree(sgf string, parent_of_local_root *Node) (*Node, int, error) {
 	// reading a final ')' character. Still, we can return what we have.
 	// Note that load_special() relies on this.
 
-	return root, len(sgf), nil		// Return characters read.
+	return root, len(sgf), nil // Return characters read.
 }
 
 // LoadCollection loads an SGF file, possibly creating many trees, and returns a
@@ -286,7 +285,7 @@ func LoadCollection(filename string) ([]*Node, error) {
 // returns a slice of all root nodes created.
 func LoadCollectionSGF(sgf string) ([]*Node, error) {
 	var ret []*Node
-	sgf = strings.TrimSpace(sgf)		// Otherwise any trailing characters will trigger an extra attempt to read a tree.
+	sgf = strings.TrimSpace(sgf) // Otherwise any trailing characters will trigger an extra attempt to read a tree.
 
 	for {
 		if len(sgf) == 0 {
@@ -330,7 +329,7 @@ func load_special(filename string, root_only bool) (*Node, error) {
 	}
 	defer infile.Close()
 
-	data := bytes.NewBuffer(make([]byte, 0, 256))		// Start buffer with len 0 cap 256
+	data := bytes.NewBuffer(make([]byte, 0, 256)) // Start buffer with len 0 cap 256
 	reader := bufio.NewReader(infile)
 
 	inside_value := false
@@ -371,7 +370,7 @@ func load_special(filename string, root_only bool) (*Node, error) {
 			if c == ';' {
 				semicolons++
 				if root_only && semicolons >= 2 {
-					data.Truncate(data.Len() - 1)		// Delete the second ; from the data.
+					data.Truncate(data.Len() - 1) // Delete the second ; from the data.
 					root, _, err := load_sgf_tree(data.String(), nil)
 					return root, err
 				}
@@ -380,7 +379,7 @@ func load_special(filename string, root_only bool) (*Node, error) {
 			if c == '(' {
 				brackets++
 				if root_only && brackets >= 2 {
-					data.Truncate(data.Len() - 1)		// Delete the second ( from the data.
+					data.Truncate(data.Len() - 1) // Delete the second ( from the data.
 					root, _, err := load_sgf_tree(data.String(), nil)
 					return root, err
 				}

@@ -24,20 +24,26 @@ func LoadGIB(gib string) (*Node, error) {
 		// Names...
 
 		if strings.HasPrefix(line, "\\[GAMEBLACKNAME=") && strings.HasSuffix(line, "\\]") {
-			root.SetValue("PB", line[16: len(line) - 2])
+			root.SetValue("PB", line[16:len(line)-2])
 		}
 
 		if strings.HasPrefix(line, "\\[GAMEWHITENAME=") && strings.HasSuffix(line, "\\]") {
-			root.SetValue("PW", line[16: len(line) - 2])
+			root.SetValue("PW", line[16:len(line)-2])
 		}
 
 		// Game info...
 
 		if strings.HasPrefix(line, "\\[GAMETAG=") {
 			dt, re, km := parse_gib_gametag(line)
-			if dt != "" { root.SetValue("DT", dt) }
-			if re != "" { root.SetValue("RE", re) }
-			if km != "" { root.SetValue("KM", km) }
+			if dt != "" {
+				root.SetValue("DT", dt)
+			}
+			if re != "" {
+				root.SetValue("RE", re)
+			}
+			if km != "" {
+				root.SetValue("KM", km)
+			}
 		}
 
 		// Split the line into tokens for the handicap and move parsing...
@@ -66,7 +72,10 @@ func LoadGIB(gib string) (*Node, error) {
 			x, err1 := strconv.Atoi(fields[4])
 			y, err2 := strconv.Atoi(fields[5])
 			if err1 == nil && err2 == nil {
-				key := "B"; if fields[3] == "2" { key = "W" }
+				key := "B"
+				if fields[3] == "2" {
+					key = "W"
+				}
 				node = NewNode(node)
 				node.SetValue(key, Point(x, y))
 			}
@@ -119,10 +128,8 @@ func parse_gib_gametag(line string) (dt, re, km string) {
 		if s[0] == 'G' {
 			gongje, err := strconv.Atoi(s[1:])
 			if err == nil {
-				km = fmt.Sprintf("%.1f", float64(gongje) / 10.0)
-				if strings.HasSuffix(km, ".0") {
-					km = km[:len(km) - 2]
-				}
+				km = fmt.Sprintf("%.1f", float64(gongje)/10.0)
+				km = strings.TrimSuffix(km, ".0")
 			}
 		}
 
@@ -133,11 +140,9 @@ func parse_gib_gametag(line string) (dt, re, km string) {
 
 	if re == "B+" || re == "W+" {
 		if zipsu > 0 {
-			re += fmt.Sprintf("%.1f", float64(zipsu) / 10.0)
+			re += fmt.Sprintf("%.1f", float64(zipsu)/10.0)
 		}
-		if strings.HasSuffix(re, ".0") {
-			re = re[:len(re) - 2]
-		}
+		re = strings.TrimSuffix(re, ".0")
 	}
 
 	return dt, re, km

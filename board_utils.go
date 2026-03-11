@@ -9,7 +9,7 @@ import (
 func (self *Board) Stones(p string) []string {
 
 	colour := self.Get(p)
-	if colour == EMPTY {					// true also if offboard / invalid
+	if colour == EMPTY { // true also if offboard / invalid
 		return nil
 	}
 
@@ -44,7 +44,7 @@ func (self *Board) stones_recurse(p string, colour Colour, touched map[string]bo
 func (self *Board) HasLiberties(p string) bool {
 
 	colour := self.Get(p)
-	if colour == EMPTY {					// true also if offboard / invalid
+	if colour == EMPTY { // true also if offboard / invalid
 		return false
 	}
 
@@ -58,9 +58,10 @@ func (self *Board) has_liberties_recurse(p string, colour Colour, touched map[st
 
 	for _, a := range AdjacentPoints(p, self.Size) {
 		a_colour := self.get_fast(a)
-		if a_colour == EMPTY {
+		switch a_colour {
+		case EMPTY:
 			return true
-		} else if a_colour == colour {
+		case colour:
 			if touched[a] == false {
 				if self.has_liberties_recurse(a, colour, touched) {
 					return true
@@ -77,12 +78,12 @@ func (self *Board) has_liberties_recurse(p string, colour Colour, touched map[st
 func (self *Board) Liberties(p string) []string {
 
 	colour := self.Get(p)
-	if colour == EMPTY {					// true also if offboard / invalid
+	if colour == EMPTY { // true also if offboard / invalid
 		return nil
 	}
 
 	touched := make(map[string]bool)
-	touched[p] = true						// Note this - slightly different setup than the other functions
+	touched[p] = true // Note this - slightly different setup than the other functions
 	return self.liberties_recurse(p, colour, touched, nil)
 }
 
@@ -96,9 +97,10 @@ func (self *Board) liberties_recurse(p string, colour Colour, touched map[string
 		if t == false {
 			touched[a] = true
 			a_colour := self.get_fast(a)
-			if a_colour == EMPTY {
+			switch a_colour {
+			case EMPTY:
 				ret = append(ret, a)
-			} else if a_colour == colour {
+			case colour:
 				ret = self.liberties_recurse(a, colour, touched, ret)
 			}
 		}
@@ -112,7 +114,7 @@ func (self *Board) liberties_recurse(p string, colour Colour, touched map[string
 func (self *Board) Singleton(p string) bool {
 
 	colour := self.Get(p)
-	if colour == EMPTY {					// true also if offboard / invalid
+	if colour == EMPTY { // true also if offboard / invalid
 		return false
 	}
 
@@ -151,7 +153,7 @@ func (self *Board) LegalColour(p string, colour Colour) (bool, error) {
 	}
 
 	if self.Ko == p {
-		if colour == self.Player {						// i.e. we've not forced a move by the wrong colour.
+		if colour == self.Player { // i.e. we've not forced a move by the wrong colour.
 			return false, fmt.Errorf("ko recapture at %q (%v,%v) forbidden", p, x, y)
 		}
 	}

@@ -39,7 +39,7 @@ func (self *Node) SetParent(new_parent *Node) {
 	if self.parent != nil {
 		for i := len(self.parent.children) - 1; i >= 0; i-- {
 			if self.parent.children[i] == self {
-				self.parent.children = append(self.parent.children[:i], self.parent.children[i + 1:]...)
+				self.parent.children = append(self.parent.children[:i], self.parent.children[i+1:]...)
 			}
 		}
 	}
@@ -80,13 +80,16 @@ func (self *Node) String() string {
 		return "<nil>"
 	}
 
-	noun := "children" ; if len(self.children) == 1 { noun = "child" }
+	noun := "children"
+	if len(self.children) == 1 {
+		noun = "child"
+	}
 
 	keys := self.AllKeys()
 	sort.Strings(keys)
 
 	return fmt.Sprintf("Node %p: depth %d, %d %s, subtree size %d, keys %v",
-				self, len(self.GetLine()) - 1, len(self.children), noun, self.SubtreeSize(), keys)
+		self, len(self.GetLine())-1, len(self.children), noun, self.SubtreeSize(), keys)
 }
 
 // Validate checks a node for obvious problems; it returns the first problem
@@ -99,11 +102,11 @@ func (self *Node) Validate() error {
 	all_aw := self.AllValues("AW")
 	all_ae := self.AllValues("AE")
 
-	if len(all_b) + len(all_w) > 1 {
+	if len(all_b)+len(all_w) > 1 {
 		return fmt.Errorf("Too many moves (B or W values)")
 	}
 
-	if len(all_b) + len(all_w) > 0 && len(all_ab) + len(all_aw) + len(all_ae) > 0 {
+	if len(all_b)+len(all_w) > 0 && len(all_ab)+len(all_aw)+len(all_ae) > 0 {
 		return fmt.Errorf("Mix of move and setup properties")
 	}
 

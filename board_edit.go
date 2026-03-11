@@ -56,7 +56,7 @@ func (self *Board) ForceStone(p string, colour Colour) {
 
 	self.ClearKo()
 
-	if ValidPoint(p, self.Size) == false {		// Consider this a pass
+	if ValidPoint(p, self.Size) == false { // Consider this a pass
 		self.Player = colour.Opposite()
 		return
 	}
@@ -86,14 +86,13 @@ func (self *Board) ForceStone(p string, colour Colour) {
 
 	if caps == 1 {
 		if self.Singleton(p) {
-			if len(self.Liberties(p)) == 1 {				// Yes, the conditions are met, there is a ko
+			if len(self.Liberties(p)) == 1 { // Yes, the conditions are met, there is a ko
 				self.SetKo(self.ko_square_finder(p))
 			}
 		}
 	}
 
 	self.Player = colour.Opposite()
-	return
 }
 
 // Play attempts to play at point p, with full legality checks. The argument
@@ -146,7 +145,7 @@ func (self *Board) DestroyGroup(p string) int {
 
 	colour := self.Get(p)
 
-	if colour != BLACK && colour != WHITE {				// Also happens if p is off board.
+	if colour != BLACK && colour != WHITE { // Also happens if p is off board.
 		return 0
 	}
 

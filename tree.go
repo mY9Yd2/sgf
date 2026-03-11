@@ -40,7 +40,7 @@ func (self *Node) GetLine() []*Node {
 
 	// Reverse the slice...
 
-	for left, right := 0, len(ret) - 1; left < right; left, right = left + 1, right - 1 {
+	for left, right := 0, len(ret)-1; left < right; left, right = left+1, right-1 {
 		ret[left], ret[right] = ret[right], ret[left]
 	}
 
@@ -106,7 +106,8 @@ func (self *Node) SubTreeKeyValueCount() (int, int) {
 	}
 	for _, child := range self.children {
 		k, v := child.SubTreeKeyValueCount()
-		keys += k; vals += v
+		keys += k
+		vals += v
 	}
 	return keys, vals
 }
@@ -122,8 +123,12 @@ func (self *Node) RootBoardSize() int {
 	root := self.GetRoot()
 	sz_string, _ := root.GetValue("SZ")
 	sz, _ := strconv.Atoi(sz_string)
-	if sz < 1  { return 19 }
-	if sz > 52 { return 52 }					// SGF limit
+	if sz < 1 {
+		return 19
+	}
+	if sz > 52 {
+		return 52
+	} // SGF limit
 	return sz
 }
 
@@ -159,14 +164,14 @@ func (self *Node) Dyer() string {
 
 		for _, key := range []string{"B", "W"} {
 
-			mv, ok := node.GetValue(key)		// Assuming just 1, as per SGF specs.
+			mv, ok := node.GetValue(key) // Assuming just 1, as per SGF specs.
 
 			if ok {
 
 				move_count++
 
 				if move_count == 20 || move_count == 40 || move_count == 60 ||
-				   move_count == 31 || move_count == 51 || move_count == 71 {
+					move_count == 31 || move_count == 51 || move_count == 71 {
 
 					if ValidPoint(mv, size) {
 						vals[move_count] = mv
